@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="login-container">
+    <div class="login-card">
+      <h2>Login</h2>
+      <div class="login-card-content">
+        <form id="login-form">
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" required>
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div id="cards" class="filler">
+      <button onclick="logout()">Logout</button>
+    </div>
+    <div class="cube">
+      <div id="1" class="cube__face cube__face--front">
+        <div class="cube__face--cover">
+          <div id="userFace" class="face-data"></div>
+          <img src="/graphql/assets/UserInfo.webp" class="face-image">
+        </div>
+      </div>
+      <div id="3" class="cube__face cube__face--back">
+        <div class="cube__face--cover">
+          <div id="auditData" class="face-data"></div>
+          <img src="/graphql/assets/Audit.webp" class="face-image">
+        </div>
+      </div>
+      <div id="2" class="cube__face cube__face--top">
+        <div class="cube__face--cover">
+          <div id="xpProgress" class="face-data"></div>
+          <img src="/graphql/assets/XP.webp" class="face-image">
+        </div>
+      </div>
+      <div id="4" class="cube__face cube__face--bottom">
+        <div class="cube__face--cover">
+          <div id="projects" class="face-data"></div>
+          <img src="/graphql/assets/Projects.webp" class="face-image">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

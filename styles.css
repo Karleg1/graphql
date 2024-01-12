@@ -1,0 +1,770 @@
+:root {
+  --background-gradient:   
+  radial-gradient(circle at 25% 25%, rgba(37, 37, 37, 0.75), rgba(18, 18, 18, 0.75)),
+  radial-gradient(circle at 75% 75%, rgba(43, 43, 43, 0.75), rgba(18, 18, 18, 0.75)),
+  linear-gradient(120deg, rgba(58, 58, 158, 0.6), rgba(136, 78, 160, 0.6), rgba(255, 100, 100, 0.6), rgba(255, 255, 140, 0.2));
+
+  --card-content: #1c1c1f;
+  --hover-button: #42424b;
+  --face-background: #2a2a2b;
+  --highlighted-card: rgba(255, 255, 255, 0.4);
+  --background-dark: #121212;
+  --card-background: rgba(255, 255, 255, 0.05);
+  --text-color: #ffffff;
+  --accent-color: #306DFA;
+  --input-background: #1e1e1e;
+  --input-border: #333333;
+
+  --border: 1px;
+  --radius: 10px;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  align-items: center;
+  background-image: url("assets/background-2.jpg");
+  background-repeat: no-repeat;
+  background-color: #121212;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow-y: auto; /* Allow scrolling if the content overflows */
+  width: 300px;
+  gap: 6px;
+  top: 0;
+  height: 100%;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#cards:hover > .card::after {
+  opacity: 1;
+}
+
+.card {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: calc(25vh - 60px);
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.card--selected {
+  background-color: var(--highlighted-card);
+}
+
+.card::before,
+.card::after {
+  border-radius: inherit;
+  content: "";
+  height: 100%;
+  left: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  transition: opacity 500ms;
+  width: 100%;
+}
+
+.card::before {
+  background: radial-gradient(
+    700px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.07),
+    transparent 40%);
+  z-index: 3;
+  transition: opacity 400ms ease 0s;
+  pointer-events: none;
+}
+
+/* Border styles */
+.card::after {
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.8),
+    transparent 40%
+  );
+  z-index: 1;
+}
+
+.card > .card-content {
+  box-sizing: border-box;
+  background: var(--card-content);
+  background-position: center;
+  border-radius: inherit;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 2px);
+  inset: 1px;
+  padding: 10px;
+  position: absolute;
+  z-index: 2;
+  justify-content: center;
+
+}
+
+.card-image-container {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  overflow: hidden; /* Hide overflow to maintain the rounded corners */
+  border-top-left-radius: 10px; /* Match the card's border radius */
+  border-top-right-radius: 10px;
+  height: 85%;
+  display: flex;
+  justify-content: center;
+}
+
+.card-text-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0px 10px 0px 10px; /* Adjust padding as needed */
+  height: 15%; /* Adjust this percentage as needed */
+}
+
+
+.card-image {
+/* position: absolute; */
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensure the image spans the full width of its container */
+  height: auto; /* Adjust to content height */
+  object-fit: cover;
+  object-fit: cover; /* Ensures the image covers the container */
+  border-top-left-radius: 10px; /* Match the card's border radius */
+  border-top-right-radius: 10px;
+  object-fit: stretch;
+}
+
+.card-title {
+  color: #fff; /* Set the color of the title text */
+  font-size: 1rem; /* Set the size of the title */
+  font-weight: bold; /* Optional: if you want the title to be bold */
+  margin-bottom: 0.5rem; /* Space below the title */
+  text-align: center; /* Center the title text */
+  margin: 0;
+  background: transparent; 
+}
+
+
+
+
+
+.wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 20000px; /* Increased to accommodate the larger size */
+  perspective-origin: 50% 50%;
+  margin-right: 110px;
+  gap: 30px;
+}
+
+.cube {
+  position: relative;
+  width: 64vw;
+  height: 70vh; 
+  transform-style: preserve-3d;
+  transform: translateZ(-100px) rotateX(0deg) rotateY(0deg);
+  transition: transform 700ms;
+}
+
+.cube__face {
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 2px solid #696969;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 5px;
+  justify-content: center;
+}
+
+.cube__face--cover {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--card-content);
+
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  border-radius: 10px;
+
+  opacity: 1;
+  transition: opacity 300ms ease;
+}
+
+.cube__face--cover--visible {
+  opacity: 1;
+}
+
+.cube__face--back > .cube__face--cover {
+  transform: rotateZ(180deg);
+}
+
+.data-div {
+  /* Add your desired styles here */
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+}
+
+.number {
+  color: white;
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cube__face--front {
+  width: 64vw;
+  height: 72vh; 
+  /* background: #121212; */
+  transform: translateZ(18.5vw);
+  /* visibility: visible; */
+  /* padding: 0px; */
+}
+
+@media screen and (min-width: 1920px) {
+  .cube__face--front {
+    width: 64vw;
+    height: 72vh; 
+    /* background: #121212; */
+    transform: translateZ(19.3vw);
+    /* padding: 0px; */
+  }
+}
+
+.cube__face--back {
+  width: 64vw;
+  height: 72vh; 
+  /* background: red; */
+  transform: rotateY(180deg) translateZ(18.5vw);
+  justify-content: flex-end;
+}
+
+@media screen and (min-width: 1920px) {
+  .cube__face--back {
+    width: 64vw;
+    height: 72vh; 
+    /* background: red; */
+    transform: rotateY(180deg) translateZ(19.3vw);
+    justify-content: flex-end;
+  }
+}
+
+.cube__face--top {
+  width: 64vw;
+  height: 72vh; 
+  /* background: green; */
+  transform: rotateX(90deg) translateZ(36vh);
+}
+
+@media screen and (min-width: 1920px) {
+  .cube__face--top {
+    width: 64vw;
+    height: 72vh; 
+    /* background: red; */
+    transform: rotateX(90deg) translateZ(36vh);
+  }
+}
+
+.cube__face--bottom {
+  width: 64vw;
+  height: 72vh; 
+  /* background: blue; */
+  transform: rotateX(-90deg) translateZ(36vh);
+}
+
+@media screen and (min-width: 1920px) {
+  .cube__face--bottom {
+    width: 64vw;
+    height: 72vh; 
+    /* background: red; */
+    transform: rotateX(-90deg) translateZ(36vh);
+  }
+}
+
+.face-image {
+  position: absolute;
+  width: 100%; /* Adjust as needed */
+  height: 100%; /* Adjust as needed */
+  object-fit: cover; /* To ensure image covers the div */
+  opacity: 1;
+  transition: opacity 1.2s ease; /* Adjust time as needed */
+  z-index: 2;
+}
+
+.face-data {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  opacity: 1;
+  transition: opacity 1.5s ease;
+  background: var( --face-background);
+  color: white;
+  border-radius: 10px;
+  background-position: center;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow-y: auto; /* Allow scrolling if the content overflows */
+  gap: 6px;
+  top: 0;
+  height: 100%;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#login-container:hover > .login-card::after {
+  opacity: 1;
+}
+
+.login-card::before,
+.login-card::after {
+  border-radius: inherit;
+  content: "";
+  height: 100%;
+  left: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  transition: opacity 500ms;
+  width: 100%;
+}
+
+.login-card::before {
+  background: radial-gradient(
+    900px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.07),
+    transparent 40%);
+  z-index: 3;
+  transition: opacity 400ms ease 0s;
+  pointer-events: none;
+}
+
+/* Border styles */
+.login-card::after {
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.8),
+    transparent 40%
+  );
+  z-index: 1;
+}
+
+.login-card > .login-card-content {
+  box-sizing: border-box;
+  background: var(--card-content);
+  background-position: center;
+  border-radius: inherit;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 2px);
+  inset: 1px;
+  padding: 10px;
+  position: absolute;
+  z-index: 2;
+  justify-content: center;
+
+}
+
+.login-card {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 500px;
+  height: 300px;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.login-card:hover::before,
+.login-card:hover::after {
+  opacity: 1;
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: white;
+  z-index: 5;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: .5rem;
+  color: #fff;
+}
+
+.input-group input {
+  width: 100%;
+  padding: .5rem;
+  background: var(--input-background);
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 20px; /* More pronounced rounded corners */
+  background: var(--card-content);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); /* Soft shadow for depth */
+  outline: none; /* Removes the outline to match the design */
+}
+
+button:hover {
+  background: var(--hover-button); /* A lighter blue on hover, adjust the color as needed */
+}
+
+button:active {
+  background: var(--hover-button); /* A darker blue for the active state, adjust the color as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow for pressed effect */
+}
+
+
+
+.card2 {
+  position : relative ;
+  z-index : 2 ;
+  display : flex ;
+  flex-direction : column ;
+  align-items : center ;
+  justify-content : flex-end ;
+  width : 32% ;
+  height : 76% ;
+  box-sizing : border-box ;
+  text-decoration : none ;
+  perspective : 700px ;
+  
+}
+.main{
+  display : flex ;
+  flex-direction : column ;
+  align-items : center ;
+  width : 100% ;
+  height : 100% ;
+  padding : 32px ;
+  box-sizing : border-box ;
+  border-radius : 24px ;
+  backdrop-filter : blur(6px) ;
+  border : solid 2px rgba(255, 255, 255, 0.411) ;
+  background : linear-gradient( 135deg , rgba(255,255,255,.4) 8% , rgba(255,255,255,.1) 60% , rgba(255,255,255,.2) 92% ) ;
+  transition : all ease .7s ;
+  color : #fff ;
+  box-shadow : 2px 2px 3px rgba(255,255,255,.2) inset ;
+}
+.touch{
+  position : absolute  ;
+  z-index : 2 ;
+  width : 33.3333% ;
+  height : 33.3333% ;
+  box-sizing : border-box ;
+}
+.touch__1{
+  top : 0 ;
+  left : 0 ;
+}
+.touch__2{
+  top : 0 ;
+  left : 0 ;
+  right : 0 ;
+  margin : 0 auto ;
+}
+.touch__3{
+  top : 0 ;
+  right : 0 ;
+}
+.touch__4{
+  top : 33.3333% ;
+  left : 0 ;
+}
+.touch__6{
+  top : 33.3333% ;
+  right : 0 ;
+}
+.touch__7{
+  bottom : 0 ;
+  left : 0 ;
+}
+.touch__8{
+  bottom : 0 ;
+  left : 0 ;
+  right : 0 ;
+  margin : 0 auto ;
+}
+.touch__9{
+  bottom : 0 ;
+  right : 0 ;
+}
+
+.icon {
+  position : relative ;
+  z-index : 10 ;
+  width : 40% ;
+  min-height: 26%;
+  border-radius : 50% ;
+  background : #fff ;
+  overflow : hidden ;
+  transition : all ease 1s ;
+}
+
+.icon > .img{
+  width : 100%;
+  height: 100%;
+}
+
+.name{
+  position : relative;
+  z-index : 1;
+  font-size : 1.3rem;
+  margin : 16px 0 8px;
+}
+
+.account{
+  position : relative ;
+  z-index : 1 ;
+  display : block ;
+  font-size : 1rem ;
+  text-decoration : none ;
+  color : #ddd ;
+}
+
+span {
+  position : relative ;
+  width : 100% ;
+  margin : 0 ;
+  box-sizing : border-box ;
+  border-radius : 8px ;
+  transition : all ease 1s ;
+  text-align: center;
+  margin-top: 15px;
+}
+.link{
+  z-index : 4 ;
+  display : flex ;
+  justify-content : center ; 
+  align-items : center ;
+  padding : 8px 16px ;
+  color : #fff ;
+  background : linear-gradient( 90deg , #2ad2ff , #00e998 ) ;
+}
+.comment{
+  z-index : 3 ;
+  padding : 12px;
+  font-size : 12px ;
+  line-height : 1.4 ;
+  color : #444 ;
+  background : #FFF ;
+}
+.link:not(:last-child){
+  margin-bottom : 16px ;
+}
+.touch__1:hover ~ .main{
+  transform : rotateX(20deg) rotateY(-20deg) rotateZ(10deg);
+}
+.touch__1:hover ~ .main .icon{
+  transform : translateX(-20px) translateY(-10px) translateZ(60px);
+  box-shadow : 20px 20px 24px rgba(0,0,0,.2) ;
+}
+.touch__2:hover ~ .main{
+  transform : rotateX(20deg) rotateY(0) rotateZ(0);
+}
+.touch__2:hover ~ .main .icon{
+  transform : translateX(0) translateY(-10px) translateZ(60px);
+  box-shadow : 0 20px 24px rgba(0,0,0,.2) ;
+}
+.touch__3:hover ~ .main{
+  transform : rotateX(20deg) rotateY(20deg) rotateZ(-10deg);
+}
+.touch__3:hover ~ .main .icon{
+  transform : translateX(20px) translateY(-10px) translateZ(60px);
+  box-shadow : -20px 20px 24px rgba(0,0,0,.2) ;
+}
+.touch__4:hover ~ .main{
+  transform : rotateX(0) rotateY(-40deg) rotateZ(0);
+}
+.touch__6:hover ~ .main{
+  transform : rotateX(0) rotateY(40deg) rotateZ(0);
+}
+.touch__7:hover ~ .main{
+  transform : rotateX(-20deg) rotateY(-20deg) rotateZ(-10deg);
+}
+.touch__7:hover ~ .main span{
+  transform : translateX(-20px) translateY(10px) translateZ(60px);
+  text-shadow: 20px -20px 24px rgba(0,0,0,1) ;
+}
+.touch__8:hover ~ .main{
+  transform : rotateX(-20deg) rotateY(0) rotateZ(0);
+}
+.touch__8:hover ~ .main span{
+  transform : translateX(0) translateY(10px) translateZ(60px);
+  text-shadow: 0 -20px 24px rgba(0,0,0,1) ;
+}
+.touch__9:hover ~ .main{
+  transform : rotateX(-20deg) rotateY(20deg) rotateZ(10deg);
+}
+.touch__9:hover ~ .main span{
+  transform : translateX(20px) translateY(10px) translateZ(60px);
+  text-shadow: -20px -20px 24px rgba(0,0,0,1) ;
+}
+
+
+.audit-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: transparent;
+  color: #fff;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  font-family: 'Arial', sans-serif; /* Use the appropriate font-family */
+  box-sizing: border-box;
+}
+
+.audit-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  top: 0;
+}
+
+.audit-bars-container {
+  width: 75%;
+}
+
+.audit-bars {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 15px;
+  /* border: solid 1px green; */
+}
+
+.audit-done-bar, .audit-received-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  
+}
+
+.audit-done-bar svg, .audit-received-bar svg {
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.audit-info {
+ width: 25%;
+ height: 100%;
+ /* border: solid 1px red; */
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: space-evenly
+}
+
+.audit-done-info, .audit-received-info {
+  display: flex;
+  margin: 0;
+}
+
+.audit-done-info, .audit-received-info {
+  font-size: 0.9rem;
+}
+
+.audit-ratio {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+  margin: 15px 0;
+  margin-bottom: 100px;
+  text-align: center;
+}
+
+.audit-message {
+  font-size: 1rem;
+  text-align: center;
+  color: #FFD700; /* Adjust color as needed */
+}
